@@ -1,5 +1,5 @@
 from random import choice, randint
-
+from typing import Optional
 import pygame
 
 # Константы для размеров поля и сетки:
@@ -38,10 +38,47 @@ pygame.display.set_caption('Змейка')
 # Настройка времени:
 clock = pygame.time.Clock()
 
+Position = tuple[int, int]
+Color = tuple[int, int, int]
+
 
 # Тут опишите все классы игры.
-...
+class GameObject:
+    """Базовый класс для объектов на поле."""
 
+    def __init__(
+        self, position: Position = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2),
+        body_color: Optional[Color] = None
+    ) -> None:
+        """Задача позиции и цвета объекта."""
+        self.position = position
+        self.body_color = body_color
+
+    def draw(self) -> None:
+        """Отрисовка объекта для дочерних классов."""
+        pass
+
+
+class Apple(GameObject):
+    """Яблоко на поле."""
+    def __init__(self, body_color: Color = APPLE_COLOR) -> None:
+        """Яблоко появляется в случайной позиции."""
+        super().__init__(body_color=body_color)
+        self.randomize_position()
+
+    def draw(self) -> None:
+        """" Появление яблока на экране."""
+        rect = pygame.Rect(self.position, (GRID_SIZE, GRID_SIZE))
+        pygame.draw.rect(screen, self.body_color, rect)
+        pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
+
+    def randomize_position(self) -> None:
+        """Случаное перемещение яблока на экране."""
+        self.position = (
+            randint(0, GRID_WIDTH - 1) * GRID_SIZE,
+            randint(0, GRID_HEIGHT - 1) * GRID_SIZE
+        )
+    
 
 def main():
     # Инициализация PyGame:
