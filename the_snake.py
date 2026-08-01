@@ -167,9 +167,7 @@ def handle_keys(game_object):
 
 def main() -> None:
     """Основная логика."""
-    # Инициализация PyGame:
     pygame.init()
-    # Тут нужно создать экземпляры классов.
     snake = Snake()
     apple = Apple()
     screen.fill(BOARD_BACKGROUND_COLOR)
@@ -179,11 +177,13 @@ def main() -> None:
         handle_keys(snake)
         snake.update_direction()
         snake.move()
+
         head_position = snake.get_head_position()
+
         if head_position == apple.position:
             snake.length += 1
             apple.randomize_position()
-        elif head_position in snake.position[1:]:
+        elif head_position in snake.positions[1:]:
             snake.reset()
             screen.fill(BOARD_BACKGROUND_COLOR)
 
