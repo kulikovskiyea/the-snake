@@ -1,5 +1,6 @@
 from random import choice, randint
 from typing import Optional
+
 import pygame
 
 # Константы для размеров поля и сетки:
@@ -102,6 +103,7 @@ class Snake(GameObject):
         """Перемещение змейки по направлению движения."""
         x_move, y_move = self.get_head_position()
         direction_x, direction_y = self.direction
+
         new_position = (
             (x_move + direction_x * GRID_SIZE) % SCREEN_WIDTH,
             (y_move + direction_y * GRID_SIZE) % SCREEN_HEIGHT
@@ -119,14 +121,12 @@ class Snake(GameObject):
             rect = pygame.Rect(position, (GRID_SIZE, GRID_SIZE))
             pygame.draw.rect(screen, self.body_color, rect)
             pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
-
         # Отрисовка головы змейки.
         head_rect = pygame.Rect(
             self.positions[0], (GRID_SIZE, GRID_SIZE)
         )
         pygame.draw.rect(screen, self.body_color, head_rect)
         pygame.draw.rect(screen, BORDER_COLOR, head_rect, 1)
-
         # Затирание последнего сегмента.
         if self.last:
             last_rect = pygame.Rect(self.last, (GRID_SIZE, GRID_SIZE))
@@ -147,8 +147,8 @@ class Snake(GameObject):
 
 
 # Функция обработки действий пользователя
-def handle_keys(game_object) -> None:
-    """Закрытие окна. Изменение направления."""
+def handle_keys(game_object: Snake) -> None:
+    """Закрытие окна. Обработка нажатия."""
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
