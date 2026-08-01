@@ -27,7 +27,7 @@ APPLE_COLOR = (255, 0, 0)
 SNAKE_COLOR = (0, 255, 0)
 
 # Скорость движения змейки:
-SPEED = 20
+SPEED = 10
 
 # Настройка игрового окна:
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
@@ -68,7 +68,7 @@ class Apple(GameObject):
         self.randomize_position()
 
 # Метод draw класса Apple
-    def draw(self):
+    def draw(self) -> None:
         rect = pygame.Rect(self.position, (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(screen, self.body_color, rect)
         pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
@@ -82,7 +82,8 @@ class Apple(GameObject):
 
 
 class Snake(GameObject):
-    """Змейка"""
+    """Змейка."""
+
     def __init__(self, body_color: Color = SNAKE_COLOR) -> None:
         """Появление змейки с движением вправо."""
         super().__init__(body_color=body_color)
@@ -93,7 +94,7 @@ class Snake(GameObject):
         self.last: Optional[Position] = None
 
 # Метод обновления направления после нажатия на кнопку
-    def update_direction(self):
+    def update_direction(self) -> None:
         if self.next_direction:
             self.direction = self.next_direction
             self.next_direction = None
@@ -136,7 +137,7 @@ class Snake(GameObject):
         """Возвращает позицию начала змейки."""
         return self.positions[0]
 
-    def crushed(self) -> None:
+    def reset(self) -> None:
         """Возврат змейки после столкновения."""
         self.length = 1
         self.position = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
@@ -145,8 +146,10 @@ class Snake(GameObject):
         self.next_direction = None
         self.last = None
 
+
 # Функция обработки действий пользователя
 def handle_keys(game_object):
+    """Закрытие окна. Изменение направления."""
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -161,15 +164,16 @@ def handle_keys(game_object):
             elif event.key == pygame.K_RIGHT and game_object.direction != LEFT:
                 game_object.next_direction = RIGHT
 
-def main():
+
+def main() -> None:
+    """Основная логика."""
     # Инициализация PyGame:
     pygame.init()
     # Тут нужно создать экземпляры классов.
     snake = Snake()
     apple = Apple()
     screen.fill(BOARD_BACKGROUND_COLOR)
-        # Тут опишите основную логику игры.
-        # ...
+        
     while True:
         clock.tick(SPEED)
         handle_keys(snake)
@@ -180,7 +184,7 @@ def main():
             snake.length += 1
             apple.randomize_position()
         elif head_position in snake.position[1:]:
-            snake.crushed()
+            snake.reset()
             screen.fill(BOARD_BACKGROUND_COLOR)
 
         apple.draw()
@@ -188,16 +192,5 @@ def main():
         pygame.display.update()
     
 
-        
-
-
 if __name__ == '__main__':
     main()
-
-
-
-
-
-
-
-
