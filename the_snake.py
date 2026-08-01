@@ -61,14 +61,14 @@ class GameObject:
 
 class Apple(GameObject):
     """Яблоко на поле."""
-    
+
     def __init__(self, body_color: Color = APPLE_COLOR) -> None:
         """Яблоко появляется в случайной позиции."""
         super().__init__(body_color=body_color)
         self.randomize_position()
 
-# Метод draw класса Apple
     def draw(self) -> None:
+        """Отрисовка яблока на экране."""
         rect = pygame.Rect(self.position, (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(screen, self.body_color, rect)
         pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
@@ -95,6 +95,7 @@ class Snake(GameObject):
 
 # Метод обновления направления после нажатия на кнопку
     def update_direction(self) -> None:
+        """Обновление направления движения змейки."""
         if self.next_direction:
             self.direction = self.next_direction
             self.next_direction = None
@@ -171,7 +172,7 @@ def main() -> None:
     snake = Snake()
     apple = Apple()
     screen.fill(BOARD_BACKGROUND_COLOR)
-        
+
     while True:
         clock.tick(SPEED)
         handle_keys(snake)
@@ -190,7 +191,7 @@ def main() -> None:
         apple.draw()
         snake.draw()
         pygame.display.update()
-    
+
 
 if __name__ == '__main__':
     main()
