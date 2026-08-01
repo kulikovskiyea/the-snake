@@ -42,13 +42,12 @@ Position = tuple[int, int]
 Color = tuple[int, int, int]
 
 
-# Тут опишите все классы игры.
 class GameObject:
     """Базовый класс для объектов на поле."""
 
     def __init__(
         self, position: Position = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2),
-        body_color: Optional[Color] = None
+        body_color: Color = BOARD_BACKGROUND_COLOR
     ) -> None:
         """Задача позиции и цвета объекта."""
         self.position = position
@@ -93,7 +92,6 @@ class Snake(GameObject):
         self.next_direction: Optional[Position] = None
         self.last: Optional[Position] = None
 
-# Метод обновления направления после нажатия на кнопку
     def update_direction(self) -> None:
         """Обновление направления движения змейки."""
         if self.next_direction:
@@ -149,7 +147,7 @@ class Snake(GameObject):
 
 
 # Функция обработки действий пользователя
-def handle_keys(game_object):
+def handle_keys(game_object) -> None:
     """Закрытие окна. Изменение направления."""
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
